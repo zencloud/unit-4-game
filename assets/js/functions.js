@@ -32,6 +32,7 @@ function game_select_player() {
     }
 }
 
+
 // Player Selects Enemy Fighter
 function game_select_enemy() {
 
@@ -62,39 +63,82 @@ function game_move_to_battle(fighter) {
 
     // Var init
     let fighterSide = '';
-    let enemyIcon = '';
-
-    // Determine which side from args
+    let fighterIcon = '';
+    // Move Player
     if (fighter == "player") {
-        enemyIcon = $("#player_icon");
+        fighterIcon = $("#player_icon");
         fighterSide = gd.fighterPlayer;
-        enemyIcon.addClass("fighter-highlight-blue");
+        fighterIcon.addClass("fighter-highlight-blue");
+        $("#player_hp").css('display', 'block');
+        gd.fighterPlayerHP = get_data("player", "hp");
+        game_display_update_hp("player", gd.fighterPlayerHP);
+        
     }
 
+    // Move Enemy
     if (fighter == "enemy") {
-        enemyIcon = $("#enemy_icon");
+        fighterIcon = $("#enemy_icon");
         fighterSide = gd.fighterEnemy;
-        enemyIcon.addClass("fighter-highlight-red");
+        fighterIcon.addClass("fighter-highlight-red");
+        $("#enemy_hp").css('display', 'block');
+        gd.fighterEnemyHP  = get_data("enemy", "hp");
+        game_display_update_hp("enemy", gd.fighterEnemyHP);
     }
 
     // Update HTML of icon
-    enemyIcon.attr('src', `${gd.iconPath}${fighterSide}${gd.iconExt}`);
+    fighterIcon.attr('src', `${gd.iconPath}${fighterSide}${gd.iconExt}`);
+
+}
+
+// Check state of game after attack
+function game_check_condition () {
+
+    // If player HP is 0: Game Over
+    if (gd.fighterPlayerHP <= 0) {
+        game_display_show_message("GAME OVER!");
+        return null;
+    }
+
+    if (gd.fighterPlayerHP > 0 && gd.fighterEnemyHP <= 0) {
+        game_display_show_message("YOU WIN!");
+    }
 }
 
 // Player Attacks
 function game_attack() {
     
-    let msg = `
-        <p class="text-yellow">${gd.fighterPlayer.toUpperCase()} does ${get_data("player", "atk")*gd.playerAtkMod} damage to ${gd.fighterEnemy.toUpperCase()}!</p>
-        <p class="text-red">${gd.fighterPlayer.toUpperCase()} takes ${get_data("enemy", "cAtk")} counter attack damage</p>
-        `;
+    // Get damage numbers
+    // Player
+    let pName = gd.fighterPlayer.toUpperCase();
+    let pAtk  = get_data("player", "atk")*gd.playerAtkMod;
+    
+    // Enemy
+    let eName = gd.fighterEnemy.toUpperCase();
+    let eAtk  = get_data("enemy", "cAtk");
+    
+    // Calc HP
+    let eHP   = (gd.fighterEnemyHP -= pAtk);
+    let pHP   = (gd.fighterPlayerHP -= eAtk);
 
+    game_display_update_hp("player", pHP);
+    game_display_update_hp("enemy", eHP);
+
+    // Display Info
+    let msg = `
+        <p class="text-yellow">${pName} does ${pAtk} damage to ${eName}!</p>
+        <p class="text-red">${pName} takes ${eAtk} counter attack damage</p>
+        `;
     game_display_show_message('html', msg);
 
     // Increase Player Attack
     gd.playerAtkMod++;
+
+    // Game Check Condition
+    game_check_condition();
 }
 
+
+// Get Fighter Data
 function get_data(side, stat) {
 
     if (side === "player") {
@@ -104,7 +148,7 @@ function get_data(side, stat) {
     if (side === "enemy") {
         return gd.fighter[gd.fighterEnemy][stat];
     }
-} 
+}
 
 
 // Display Message Update
@@ -117,5 +161,18 @@ function game_display_show_message(element, string) {
     }
     if (element === 'html') {
         msgDisplay.html(string);
+    }
+}
+
+
+// Update HP
+function game_display_update_hp(side, hp) {
+
+    if (side === "enemy") {
+        $("#enemy_hp").text(hp);
+    }
+
+    if (side === "player") {
+        $("#player_hp").text(hp);
     }
 }

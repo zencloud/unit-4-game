@@ -13,26 +13,26 @@ const gd = {
         // Fighters
         luke: {
             hp:   120,
-            atk:  20,
-            cAtk: 100    
+            atk:  5,
+            cAtk: 25    
         },
 
         troop: {
             hp:   100,
-            atk:  20,
-            cAtk: 100
+            atk:  10,
+            cAtk: 10
         },
 
         maul: {
             hp:   100,
-            atk:  20,
-            cAtk: 100
+            atk:  10,
+            cAtk: 10
         },
 
         vader: {
             hp:   150,
-            atk:  20,
-            cAtk: 100
+            atk:  5,
+            cAtk: 25
         }
 
     },

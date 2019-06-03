@@ -87,13 +87,16 @@ body, html {
 }
 
 
-
 /* Fighter Select Hud */
 .fighter-select-cell {
     position: relative;
     width: max-content;
     margin-left: 12px;
     margin-right: 12px;
+}
+
+.fighter-select-cell:hover {
+    cursor: pointer;
 }
 
 .fighter-select-hp-hud {
@@ -149,6 +152,10 @@ body, html {
 #fighter-battle-cell-hud-vs {
     width: 70px;
     text-align: center;
+}
+
+#enemy_hp, #player_hp {
+    display: none;
 }
 
 /* Buttons */

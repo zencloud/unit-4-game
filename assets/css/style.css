@@ -35,17 +35,27 @@ body, html {
     text-align: center;
 }
 
+.text-yellow {
+    color: yellow;
+}
+
+.text-red {
+    color: red;
+}
+
 /* Main Containers */
 #message-container {
-    width: 300px;
+    width: max-content;
+    min-width: 400px;
     margin-top: 30px;
     text-align: center;
     font-size: 16px;
+    line-height: 25px;
 }
 
 #fighter-select-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     width: 550px;
     height: max-content;
@@ -82,6 +92,8 @@ body, html {
 .fighter-select-cell {
     position: relative;
     width: max-content;
+    margin-left: 12px;
+    margin-right: 12px;
 }
 
 .fighter-select-hp-hud {

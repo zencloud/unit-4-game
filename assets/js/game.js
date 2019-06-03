@@ -1,7 +1,7 @@
 /// Core Game JS
 
 // Game Data Object Initilization
-const gameData = {
+const gd = {
 
     // Icon Storage
     iconPath: "assets/imgs/fighter_icons/",
@@ -12,7 +12,7 @@ const gameData = {
         
         // Fighters
         luke: {
-            hp:   100,
+            hp:   120,
             atk:  20,
             cAtk: 100    
         },
@@ -30,7 +30,7 @@ const gameData = {
         },
 
         vader: {
-            hp:   100,
+            hp:   150,
             atk:  20,
             cAtk: 100
         }
@@ -39,9 +39,13 @@ const gameData = {
 
     // Selected Fighters
     fighterPlayer: "",
+    fighterPlayerHP: 0,
     fighterEnemy:  "",
+    fighterEnemyHP: 0,
     
     // Game Control
-    inputAllowed: false,
-    gameStage:    0
+    gameStage:    0,
+
+    // Game Tracking
+    playerAtkMod: 1
 }

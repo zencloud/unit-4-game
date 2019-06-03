@@ -7,11 +7,17 @@
 body, html {
     background-image: url("../../assets/imgs/bg/bg_main.png");
     color: white;
+    font-family: 'Robot', sans-serif;
+    font-size: 14px;
 }
 
 #wrapper {
     width: 100%;
-    min-height: calc(100vh - 70px);
+    min-height: calc(100vh - 80px);
+    background-image: url("../../assets/imgs/bg/border-top-blue.png");
+    background-repeat: repeat no-repeat;
+    background-position: top; 
+    overflow: auto;
 }
 
 /* Border Glow */
@@ -25,11 +31,16 @@ body, html {
     box-shadow: 0 0 15px #1e6d91;
 }
 
+.center {
+    text-align: center;
+}
+
 /* Main Containers */
 #message-container {
     width: 300px;
     margin-top: 30px;
     text-align: center;
+    font-size: 16px;
 }
 
 #fighter-select-container {
@@ -42,13 +53,38 @@ body, html {
     text-align: center;
 }
 
+#fighter-battle-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 75px;
+    width: 400px;
+}
+
+#player-input-container {
+    display: none;
+    margin: 0 auto;
+    margin-top: 75px;
+    width: max-content;
+}
+
+/* Footer Container */
+#footer {
+    background-image: url("../../assets/imgs/bg/border-bottom-blue.png");
+    background-position: top;
+    height: 80px;
+}
+
+
+
 /* Fighter Select Hud */
 .fighter-select-cell {
     position: relative;
     width: max-content;
 }
 
-.fighter-attack-hud {
+.fighter-select-hp-hud {
     position: absolute;
     bottom: -5px;
     left: 22px;
@@ -59,7 +95,8 @@ body, html {
     border-radius: 20px;
     border-color: #a9aeb2;
     background-color: #282828;
-    color: #f2c40f;
+    color: #26ad5e;
+    padding: 3px;
 }
 
 .fighter-highlight-blue {
@@ -68,4 +105,54 @@ body, html {
     border-width: 3px;
     border-color: #2b9dd2;
     box-shadow: 0 0 15px #2b9dd2;    
+}
+
+.fighter-highlight-red {
+    border-radius: 100px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #b60022;
+    box-shadow: 0 0 15px #b60022;    
+}
+
+/* Battle Hud */
+.battle-info-cell {
+    margin: 0 auto;
+    margin-top: 3px;
+    padding: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 75px;
+    height: max-content;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 20px;
+    border-color: #a9aeb2;
+    background-color: #282828;
+    color: #26ad5e;
+    text-align: center;
+    font-weight: bold;
+}
+
+#fighter-battle-cell-hud-vs {
+    width: 70px;
+    text-align: center;
+}
+
+/* Buttons */
+
+#btn-attack {
+    background-image: url("../../assets/imgs/hud/btn_attack.png");
+    width: 137px;
+    height: 43px;
+    border-radius: 18px;
+    border: none;
+}
+
+#btn-attack:hover {
+    cursor: pointer;
+}
+
+#btn-attack:focus {
+    outline: none;
 }

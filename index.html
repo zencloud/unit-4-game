@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/jquery/jquery-3.4.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,regular,italic,500,500italic,700,700italic,900,900italic" rel="stylesheet" />
     <title>Week 4 Homework Star Wars Game</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
 
         <!-- Game Message Area -->
         <div id="message-container" class="round-border-glow">
-            Select your fighter
+            <p id="message-display">Select your fighter!</p>
         </div>
 
         <!-- Fighter Selection Area -->
@@ -24,33 +25,33 @@
 
             <!-- Fighter 1 -->
             <div class="fighter-select-cell">
-                <img class="fighter-highlight-blue" src="assets/imgs/fighter_icons/luke.png">
-                <div class="fighter-attack-hud">
+                <img data-name="luke" onclick="game_select_player()" src="assets/imgs/fighter_icons/luke.png">
+                <div class="fighter-select-hp-hud">
                     100
                 </div>
             </div>
 
-            <!-- Fighter 1 -->
+            <!-- Fighter 2 -->
             <div class="fighter-select-cell">
-                <img class="fighter-highlight-blue" src="assets/imgs/fighter_icons/luke.png">
-                <div class="fighter-attack-hud">
-                    100
+                <img data-name="maul" onclick="game_select_player()" src="assets/imgs/fighter_icons/maul.png">
+                <div class="fighter-select-hp-hud">
+                    125
                 </div>
             </div>
 
-            <!-- Fighter 1 -->
+            <!-- Fighter 3 -->
             <div class="fighter-select-cell">
-                <img class="fighter-highlight-blue" src="assets/imgs/fighter_icons/luke.png">
-                <div class="fighter-attack-hud">
-                    100
+                <img data-name="troop" onclick="game_select_player()" src="assets/imgs/fighter_icons/troop.png">
+                <div class="fighter-select-hp-hud">
+                    80
                 </div>
             </div>
 
-            <!-- Fighter 1 -->
+            <!-- Fighter 4 -->
             <div class="fighter-select-cell">
-                <img class="fighter-highlight-blue" src="assets/imgs/fighter_icons/luke.png">
-                <div class="fighter-attack-hud">
-                    100
+                <img data-name="vader" onclick="game_select_player()" src="assets/imgs/fighter_icons/vader.png">
+                <div class="fighter-select-hp-hud">
+                    150
                 </div>
             </div>
 
@@ -59,12 +60,29 @@
 
         <!-- Fighter Battle Area -->
         <div id="fighter-battle-container">
-            (FS)
+
+            <!-- Player Battle Cell -->
+            <div id="fighter-battle-cell-player">
+                <img id="player_icon" src="assets/imgs/fighter_icons/unknown.png">
+                <div id="player_hp" class="battle-info-cell">100</div>
+            </div>
+            
+            <!-- HUD: VS -->
+            <div id="fighter-battle-cell-hud-vs">
+                <img src="assets/imgs/hud/vs.png">
+            </div>
+
+            <!-- Enemy Battle Cell -->
+            <div id="fighter-battle-cell-enemy">
+                <img id="enemy_icon" src="assets/imgs/fighter_icons/unknown.png">
+                <div id="enemy_hp" class="battle-info-cell">200</div>                
+            </div>
+
         </div>
 
         <!-- Player Input Buttns (Attack) -->
-        <div id="player-input-container">
-            (ATK)
+        <div id="player-input-container" class="center">
+            <button id="btn-attack"></button>
         </div>
 
     </div>
@@ -73,5 +91,8 @@
     <div id="footer">
         (FOOT)
     </div>
+
+    <script src="assets/js/functions.js"></script>
+    <script src="assets/js/game.js"></script>
 </body>
 </html>

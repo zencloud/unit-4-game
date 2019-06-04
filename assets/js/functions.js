@@ -15,7 +15,7 @@ function game_select_player() {
     gd.gameStage++;
 
     // Update Game Message
-    game_display_show_message('text', 'Select your enemy fighter!');
+    ui_display_message('text', 'Select your enemy fighter!');
 
     // Set player choice and remove from pool
     let playerChoice = $(event.target);
@@ -43,7 +43,7 @@ function game_select_enemy() {
     gd.gameStage++;
 
     // Update Message
-    game_display_show_message('text', 'Attack!');
+    ui_display_message('text', 'Attack!');
 
     // Set set enemy choice and then remove from pool
     let playerChoice = $(event.target);
@@ -54,8 +54,7 @@ function game_select_enemy() {
     game_move_to_battle("enemy");
 
     // Create Attack Button
-    let btnAttack = $("#player-input-container");
-    btnAttack.css('display', 'block');
+    ui_input_show();
 }
 
 
@@ -64,14 +63,15 @@ function game_move_to_battle(fighter) {
     // Var init
     let fighterSide = '';
     let fighterIcon = '';
+
     // Move Player
     if (fighter == "player") {
         fighterIcon = $("#player_icon");
         fighterSide = gd.fighterPlayer;
         fighterIcon.addClass("fighter-highlight-blue");
         $("#player_hp").css('display', 'block');
-        gd.fighterPlayerHP = get_data("player", "hp");
-        game_display_update_hp("player", gd.fighterPlayerHP);
+        gd.fighterPlayerHP = data_get("player", "hp");
+        ui_update_hp("player", gd.fighterPlayerHP);
         
     }
 
@@ -81,8 +81,8 @@ function game_move_to_battle(fighter) {
         fighterSide = gd.fighterEnemy;
         fighterIcon.addClass("fighter-highlight-red");
         $("#enemy_hp").css('display', 'block');
-        gd.fighterEnemyHP  = get_data("enemy", "hp");
-        game_display_update_hp("enemy", gd.fighterEnemyHP);
+        gd.fighterEnemyHP  = data_get("enemy", "hp");
+        ui_update_hp("enemy", gd.fighterEnemyHP);
     }
 
     // Update HTML of icon
@@ -91,18 +91,65 @@ function game_move_to_battle(fighter) {
 }
 
 // Check state of game after attack
-function game_check_condition () {
+function game_check_battle_condition () {
 
     // If player HP is 0: Game Over
     if (gd.fighterPlayerHP <= 0) {
-        game_display_show_message("GAME OVER!");
-        return null;
+        game_round_lost();
     }
 
     if (gd.fighterPlayerHP > 0 && gd.fighterEnemyHP <= 0) {
-        game_display_show_message("YOU WIN!");
+        game_round_won();
+
     }
 }
+
+
+// Player Lost Round
+function game_round_lost () {
+    ui_display_message('text', 'GAME OVER!');
+
+    $("#btn-attack").css('display', 'none');
+    $("#btn-restart").css('display', 'block');
+}
+
+// Player Wins Round
+function game_round_won () {
+    ui_display_message('text', 'YOU WIN!');
+
+    // Remove Fighter
+    $("#enemy_hp").css('display', 'none');
+    $("#enemy_icon").attr('src', 'assets/imgs/fighter_icons/unknown.png');
+
+    // Hide Input Container
+    ui_input_hide();
+
+    // Update Stage
+    gd.gameStage = 2;
+
+    // Update Win Count
+    gd.winCount++;
+
+    // Entire Game Won
+    if (gd.winCount == 3) {
+        
+        // Win Update Msg
+        let msg = `<h2>Congrats!</h2>
+                   <p>You won!</p>`;
+
+        ui_display_message('html', msg);
+
+        // Remove Attack Button
+        ui_input_show();
+        $("#btn-attack").css('display', 'none');
+        // Show restart button
+        $("#btn-restart").css('display', 'block');
+        
+        // Disable Fighter Select Box
+        $("#fighter-select-container").css('display', 'none');
+    }
+}
+
 
 // Player Attacks
 function game_attack() {
@@ -110,36 +157,36 @@ function game_attack() {
     // Get damage numbers
     // Player
     let pName = gd.fighterPlayer.toUpperCase();
-    let pAtk  = get_data("player", "atk")*gd.playerAtkMod;
+    let pAtk  = data_get("player", "atk")*gd.playerAtkMod;
     
     // Enemy
     let eName = gd.fighterEnemy.toUpperCase();
-    let eAtk  = get_data("enemy", "cAtk");
+    let eAtk  = data_get("enemy", "cAtk");
     
-    // Calc HP
-    let eHP   = (gd.fighterEnemyHP -= pAtk);
-    let pHP   = (gd.fighterPlayerHP -= eAtk);
+    // Calculate Remaining HP
+    let eHP   = clamp((gd.fighterEnemyHP -= pAtk), 0, 999999);
+    let pHP   = clamp((gd.fighterPlayerHP -= eAtk), 0, 999999);
 
-    game_display_update_hp("player", pHP);
-    game_display_update_hp("enemy", eHP);
+    ui_update_hp("player", pHP);
+    ui_update_hp("enemy", eHP);
 
     // Display Info
     let msg = `
         <p class="text-yellow">${pName} does ${pAtk} damage to ${eName}!</p>
         <p class="text-red">${pName} takes ${eAtk} counter attack damage</p>
         `;
-    game_display_show_message('html', msg);
+    ui_display_message('html', msg);
 
     // Increase Player Attack
     gd.playerAtkMod++;
 
     // Game Check Condition
-    game_check_condition();
+    game_check_battle_condition();
 }
 
 
 // Get Fighter Data
-function get_data(side, stat) {
+function data_get(side, stat) {
 
     if (side === "player") {
         return gd.fighter[gd.fighterPlayer][stat];
@@ -152,7 +199,7 @@ function get_data(side, stat) {
 
 
 // Display Message Update
-function game_display_show_message(element, string) {
+function ui_display_message(element, string) {
 
     let msgDisplay = $('#message-display');
 
@@ -166,7 +213,7 @@ function game_display_show_message(element, string) {
 
 
 // Update HP
-function game_display_update_hp(side, hp) {
+function ui_update_hp(side, hp) {
 
     if (side === "enemy") {
         $("#enemy_hp").text(hp);
@@ -175,4 +222,15 @@ function game_display_update_hp(side, hp) {
     if (side === "player") {
         $("#player_hp").text(hp);
     }
+}
+
+function ui_input_hide () {
+    
+    // Remove Button
+    $("#player-input-container").css('display', 'none');    
+}
+
+function ui_input_show () {
+    $("#player-input-container").css('display', 'block');
+
 }

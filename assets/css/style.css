@@ -11,6 +11,10 @@ body, html {
     font-size: 14px;
 }
 
+h2 { 
+    font-size: 30px;
+    font-weight: 700;
+}
 #wrapper {
     width: 100%;
     min-height: calc(100vh - 80px);
@@ -160,7 +164,7 @@ body, html {
 
 /* Buttons */
 
-#btn-attack {
+#btn-attack, #btn-restart {
     background-image: url("../../assets/imgs/hud/btn_attack.png");
     width: 137px;
     height: 43px;
@@ -168,10 +172,15 @@ body, html {
     border: none;
 }
 
-#btn-attack:hover {
+#btn-restart {
+    display: none;
+    background-image: url("../../assets/imgs/hud/btn_restart.png");
+}
+
+#btn-attack:hover, #btn-restart:hover {
     cursor: pointer;
 }
 
-#btn-attack:focus {
+#btn-attack:focus, #btn-restart:focus {
     outline: none;
 }

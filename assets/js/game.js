@@ -13,12 +13,12 @@ const gd = {
         // Fighters
         luke: {
             hp:   120,
-            atk:  5,
-            cAtk: 25    
+            atk:  7,
+            cAtk: 10    
         },
 
         troop: {
-            hp:   100,
+            hp:   120,
             atk:  10,
             cAtk: 10
         },
@@ -38,14 +38,15 @@ const gd = {
     },
 
     // Selected Fighters
-    fighterPlayer: "",
+    fighterPlayer:   "",
     fighterPlayerHP: 0,
-    fighterEnemy:  "",
-    fighterEnemyHP: 0,
+    fighterEnemy:    "",
+    fighterEnemyHP:  0,
     
     // Game Control
-    gameStage:    0,
+    gameStage:       0,
+    winCount:    0,  
 
     // Game Tracking
-    playerAtkMod: 1
+    playerAtkMod:    1
 }

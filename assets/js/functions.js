@@ -19,7 +19,8 @@ function game_select_player() {
 
     // Set player choice and remove from pool
     let playerChoice = $(event.target);
-    gd.fighterPlayer = playerChoice.data("name");
+    gd.fighterPlayer = parseInt(playerChoice.data("fid"));
+
     playerChoice.parent().remove();
 
     // Show chosen player in battle area
@@ -47,7 +48,7 @@ function game_select_enemy() {
 
     // Set set enemy choice and then remove from pool
     let playerChoice = $(event.target);
-    gd.fighterEnemy = playerChoice.data("name");
+    gd.fighterEnemy = parseInt(playerChoice.data("fid"));
     playerChoice.parent().remove();
 
     // Show chosen enemy in battle area
@@ -66,8 +67,8 @@ function game_move_to_battle(fighter) {
 
     // Move Player
     if (fighter == "player") {
-        fighterIcon = $("#player_icon");
-        fighterSide = gd.fighterPlayer;
+        fighterIcon = $('#player_icon');
+        fighterSide = data_get('player', 'name');
         fighterIcon.addClass("fighter-highlight-blue");
         $("#player_hp").css('display', 'block');
         gd.fighterPlayerHP = data_get("player", "hp");
@@ -78,7 +79,7 @@ function game_move_to_battle(fighter) {
     // Move Enemy
     if (fighter == "enemy") {
         fighterIcon = $("#enemy_icon");
-        fighterSide = gd.fighterEnemy;
+        fighterSide = data_get('enemy', 'name');
         fighterIcon.addClass("fighter-highlight-red");
         $("#enemy_hp").css('display', 'block');
         gd.fighterEnemyHP  = data_get("enemy", "hp");
@@ -156,12 +157,12 @@ function game_attack() {
     
     // Get damage numbers
     // Player
-    let pName = gd.fighterPlayer.toUpperCase();
+    let pName = data_get("player", "name").toUpperCase();
     let pAtk  = data_get("player", "atk")*gd.playerAtkMod;
     
     // Enemy
-    let eName = gd.fighterEnemy.toUpperCase();
-    let eAtk  = data_get("enemy", "cAtk");
+    let eName = data_get('enemy', 'name').toUpperCase();
+    let eAtk  = data_get('enemy', 'cAtk');
     
     // Calculate Remaining HP
     let eHP   = clamp((gd.fighterEnemyHP -= pAtk), 0, 999999);
@@ -175,6 +176,7 @@ function game_attack() {
         <p class="text-yellow">${pName} does ${pAtk} damage to ${eName}!</p>
         <p class="text-red">${pName} takes ${eAtk} counter attack damage</p>
         `;
+
     ui_display_message('html', msg);
 
     // Increase Player Attack
@@ -184,6 +186,33 @@ function game_attack() {
     game_check_battle_condition();
 }
 
+// Game Restart
+function game_restart () {
+
+    // Remove Button
+    $("#btn-restart").css('display', 'none');
+    $("#btn-attack").css('display', 'block');
+    ui_input_hide();
+
+    // Reset Game Vars
+    gd.fighterPlayer = 0;
+    gd.fighterEnemy  = 0;
+    gd.gameStage     = 1;
+    gd.playerAtkMod  = 1;
+    gd.winCount      = 0;
+
+    // Battle Area Reset
+    $("#player_icon").attr('src', 'assets/imgs/fighter_icons/unknown.png');
+    $("#player_hp").css('display', 'none');
+    $("#enemy_icon").attr('src', 'assets/imgs/fighter_icons/unknown.png');
+    $("#enemy_hp").css('display', 'none');
+
+    // Reset Select Area
+    $("#fighter-select-container").css('display', 'flex').html(htmlTemplate.fighterSelect);
+
+    // Update Message
+    ui_display_message('text', 'Select your fighter!');
+}
 
 // Get Fighter Data
 function data_get(side, stat) {
